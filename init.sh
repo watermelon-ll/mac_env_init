@@ -66,21 +66,6 @@ else
     log_success "Git 已安装: $(git --version)"
 fi
 
-# 配置 Git
-log_info "配置 Git..."
-if [[ -z $(git config --global user.name) ]]; then
-    read -p "请输入 Git 用户名: " GIT_USERNAME
-    git config --global user.name "$GIT_USERNAME"
-fi
-
-if [[ -z $(git config --global user.email) ]]; then
-    read -p "请输入 Git 邮箱: " GIT_EMAIL
-    git config --global user.email "$GIT_EMAIL"
-fi
-
-git config --global init.defaultBranch main
-log_success "Git 配置完成"
-
 # ============================================
 # 3. 安装 Python3
 # ============================================
@@ -275,10 +260,15 @@ alias reload='source ~/.zshrc'
 # 网络
 alias ip='ipconfig getifaddr en0'
 alias localip='ipconfig getifaddr en0'
-alias publicip='curl -s https://api.ipify.org'
+alias publicip='curl -s https://icanhazip.com'
 
-# 端口查看
+# 端口查看（用法: port 8080）
 port() {
+    if [[ -z "$1" ]]; then
+        echo "用法: port <端口号>" >&2
+        echo "示例: port 8080" >&2
+        return 1
+    fi
     lsof -i ":$1"
 }
 
